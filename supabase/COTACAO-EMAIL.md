@@ -25,12 +25,12 @@ Precisa do [Supabase CLI](https://supabase.com/docs/guides/cli) instalado e loga
 
 ```bash
 supabase login
-supabase link --project-ref ltyerpqbpeijxghtnemr
+supabase link --project-ref <project-ref>
 supabase functions deploy enviar-cotacao
 ```
 
 > `project-ref` é o subdomínio da sua `VITE_SUPABASE_URL`
-> (`ltyerpqbpeijxghtnemr`).
+> (`<project-ref>`).
 
 ## 4. Secrets da função
 

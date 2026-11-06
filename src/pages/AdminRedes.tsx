@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import {
   Bar,
   BarChart,
@@ -11,13 +11,14 @@ import {
   YAxis,
 } from 'recharts'
 import { ChevronRight, Search, X } from 'lucide-react'
-import { carregarPrestadoresRedeEstatico } from '../data/redeDashboardEstatico'
 import {
+  carregarPrestadoresRede,
   cidadesDe,
   construirDashboardPorCidade,
   type BlocoFicha,
   type DashboardCidade,
   type LinhaFicha,
+  type PrestadorRede,
 } from '../data/redeDashboardRepo'
 import './adminRedes.css'
 
@@ -544,8 +545,32 @@ function ProviderCard({
 /* ====================== página ====================== */
 
 export default function AdminRedes() {
-  const [prestadores] = useState(() => carregarPrestadoresRedeEstatico())
-  const [cidade, setCidade] = useState(() => cidadesDe(prestadores)[0] ?? '')
+  /* Dado interno (precos negociados): vem só do Supabase, protegido por
+     RLS + login. Nunca importar em arquivo estático — iria para o bundle
+     público do site. */
+  const [prestadores, setPrestadores] = useState<PrestadorRede[]>([])
+  const [carregando, setCarregando] = useState(true)
+  const [erro, setErro] = useState<string | null>(null)
+  const [cidade, setCidade] = useState('')
+
+  useEffect(() => {
+    let ativo = true
+    carregarPrestadoresRede()
+      .then((lista) => {
+        if (!ativo) return
+        setPrestadores(lista)
+        setCidade((atual) => atual || (cidadesDe(lista)[0] ?? ''))
+      })
+      .catch((e: unknown) => {
+        if (ativo) setErro(e instanceof Error ? e.message : String(e))
+      })
+      .finally(() => {
+        if (ativo) setCarregando(false)
+      })
+    return () => {
+      ativo = false
+    }
+  }, [])
   const [categoria, setCategoria] = useState('')
   const [status, setStatus] = useState('')
   const [busca, setBusca] = useState('')
@@ -596,7 +621,15 @@ export default function AdminRedes() {
         )}
       </div>
 
-      {!dash || !dash.meta.total ? (
+      {carregando ? (
+        <div className="rd-card">
+          <p className="rd-empty">Carregando dados da rede…</p>
+        </div>
+      ) : erro ? (
+        <div className="rd-card">
+          <p className="rd-empty" role="alert">Não foi possível carregar os dados: {erro}</p>
+        </div>
+      ) : !dash || !dash.meta.total ? (
         <div className="rd-card">
           <p className="rd-empty">Nenhum prestador cadastrado ainda{cidade ? ` em ${cidade}` : ''}.</p>
         </div>

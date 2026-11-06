@@ -219,4 +219,4 @@ create policy "crm excluir"
 --    CRM → Usuários (sem precisar de SQL).
 -- ============================================================
 -- insert into public.crm_perfis (user_id, nome, email, papel)
--- values ('SEU-UUID-AQUI', 'Khemraj Junior', 'khemraj.junior@innovaoperadora.com.br', 'admin');
+-- values ('SEU-UUID-AQUI', 'Nome do Admin', 'admin@exemplo.com.br', 'admin');

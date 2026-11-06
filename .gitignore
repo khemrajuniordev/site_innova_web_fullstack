@@ -29,5 +29,8 @@ dist-ssr
 # variáveis locais
 .env
 
+# Dados internos (precos negociados etc.) - NUNCA versionar; repo publico
+dados-internos/
+
 # Supabase CLI (estado local do link)
 supabase/.temp/
