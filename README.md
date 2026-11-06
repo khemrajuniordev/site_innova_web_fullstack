@@ -147,7 +147,6 @@ prontas por perfil. Não usa IA externa e não envolve dados de pacientes.
 │   ├── data/                  # Dados estáticos e repositórios Supabase
 │   │   ├── rede.ts            # Prestadores (fallback) + derivação dos filtros
 │   │   ├── *Repo.ts           # Acesso ao Supabase (rede, CRM, cotações…)
-│   │   └── redeDashboardJson/ # Base de preços por cidade (origem do seed)
 │   ├── hooks/                 # useRevealOnScroll
 │   ├── lib/                   # Cliente Supabase, consentimento de cookies
 │   ├── pages/                 # Páginas públicas e do /admin
@@ -238,7 +237,7 @@ Rode os scripts no **SQL Editor** do Supabase, nesta ordem:
 | 3 | `cotacoes.sql` | Leads de `/cotacao` |
 | 4 | `credenciados.sql` | Leads de `/seja-um-credenciado` |
 | 5 | `rede_dashboard.sql` | Tabelas do dashboard de redes |
-| 6 | `rede_dashboard_seed.sql` | Preços/procedimentos por cidade |
+| 6 | `rede_dashboard_seed.sql` | Preços/procedimentos por cidade. **Não versionado** (dado interno): fica em `dados-internos/`, fora do git |
 | 7 | `crm.sql` | Base do Controle de CRM: perfis, solicitações, triggers e RLS |
 | 8 | `crm_anexos.sql` | Bucket e tabela de anexos (documentos e recibos) |
 | 9 | `crm_historico.sql` | Trilha de auditoria automática |

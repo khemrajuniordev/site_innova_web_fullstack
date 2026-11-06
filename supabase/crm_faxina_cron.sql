@@ -10,7 +10,7 @@
 --   2. Faça o deploy da função SEM verificação de JWT (ela é chamada pelo cron):
 --        supabase functions deploy crm-faxina --no-verify-jwt
 --
--- DEPOIS, troque <CRM_FAXINA_SECRET> abaixo pelo MESMO valor do secret
+-- DEPOIS, troque <project-ref> pelo ref do seu projeto e <CRM_FAXINA_SECRET> abaixo pelo MESMO valor do secret
 -- e rode este script no SQL Editor.
 -- ============================================================
 
@@ -27,7 +27,7 @@ select cron.schedule(
   '0 3 * * 0',
   $$
   select net.http_post(
-    url := 'https://ltyerpqbpeijxghtnemr.supabase.co/functions/v1/crm-faxina',
+    url := 'https://<project-ref>.supabase.co/functions/v1/crm-faxina',
     headers := jsonb_build_object(
       'Content-Type', 'application/json',
       'x-faxina-secret', '<CRM_FAXINA_SECRET>'
